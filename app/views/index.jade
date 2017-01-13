@@ -1,0 +1,20 @@
+extends ./includes/layout
+
+block content
+  .container
+    .row
+      each cat in categories
+        if cat.movies && cat.movies.length > 0
+          .panel.panel-default
+            .panel-heading
+              h3
+                a(href='/results?cat=#{cat._id}&p=0') #{cat.name}
+            .panel-body
+                each item in cat.movies
+                  .col-md-2
+                    .thumbnail
+                      a(href="/movie/#{item._id}")
+                          img(src="#{item.poster}", alt="#{item.title}")
+                      .caption
+                        h4 #{item.title}
+                        p: a.btn.btn-primary(href="/movie/#{item._id}", role="button") 观看预告片

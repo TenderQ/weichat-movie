@@ -1,0 +1,16 @@
+<div class="nav-top">
+	<div class="container-fluid">
+		<div class="fl clearfix">
+			<a href="/">电影</a>
+		</div>
+		<p class="fr tr">
+			{{if user}}
+			<a href="javascript:;">{{user.name}}</a><span>&nbsp;|&nbsp;</span>
+			<a href="/user/logout">注销</a>
+			{{else}}
+			<a href="/register#signup">注册</a><span>&nbsp;|&nbsp;</span>
+			<a href="/register#signin">登录</a>
+			{{/if}}
+		</p>
+	</div>
+</div>

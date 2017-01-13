@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>搜电影</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+</head>
+<body>
+	<h1>点击标题，开始录音翻译</h1>
+	<p id="title"></p>
+	<div id="director"></div>
+	<div id="year"></div>
+	<div id="poster"></div>
+	<script src="http://zeptojs.com/zepto.js"></script>
+	<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+	<script>
+		wx.config({
+		    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+		    appId: 'wxa70ee22bb073c6ef', // 必填，公众号的唯一标识
+		    timestamp:'{{{timestamp}}}', // 必填，生成签名的时间戳
+		    nonceStr: '{{{noncestr}}}', // 必填，生成签名的随机串
+		    signature: '{{{signature}}}',// 必填，签名，见附录1
+		    jsApiList: [
+				'startRecord',
+				'stopRecord',
+				'onVoiceRecordEnd',
+				'translateVoice',
+				'onMenuShareTimeline',
+				'onMenuShareAppMessage',
+				'onMenuShareQQ',
+				'onMenuShareWeibo',
+				'onMenuShareQZone',
+				'previewImage',
+		    ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+		});
+		wx.ready(function(){
+			wx.checkJsApi({
+				jsApiList: ['onVoiceRecordEnd'],
+				success: function(res){
+					console.log(res);
+				}
+			});
+			
+			var shareContent = {
+				title: '搜电影',
+				desc: '搜索电影',
+				link: 'https://www.baidu.com',
+				imgUrl: 'https://misc.360buyimg.com/mtd/pc/index/home/images/logo.v2.png',
+				success: function(){
+					window.alert('分享成功');
+				}
+			};
+			wx.onMenuShareAppMessage(shareContent);
+
+			var slides ={};
+			var isRecording = false;
+			
+			$('#poster').on('tap',function(){
+				wx.previewImage(slides);
+			});
+
+			$('h1').on('tap',function(){
+				if(!isRecording){
+					isRecording = true;
+					wx.startRecord({
+						cancel: function(){
+							window.alert('搜索失败');
+						}
+					});
+					return;
+				}
+				isRecording = false;
+				wx.stopRecord({
+					success: function(res){
+						var localid = res.localid;
+						wx.translateVoice({
+							localId: '',
+							isShowProgressTips: 1,
+							success: function(res){
+								var result = res.translateResult;//语音识别结果
+								
+								$.ajax({
+									type: 'get',
+									url: 'https://api.douban.com/v2/movie/search?q='+result,
+									dataType: jsonp,
+									jsonp: 'callback',
+									success: function(data){
+										var subject = data.subjects[0];
+										$('#title').html(subject.title);
+										$('#year').html(subject.year);
+										$('#director').html(subject.directors[0].name);
+										$('#poster').html('<img src="'+subject.images.large+'">');
+									
+										shareContent = {
+											title: subject.title,
+											desc: '搜索电影'+subject.title,
+											link: subject.alt,
+											imgUrl: subject.images.small,
+											type: 'link',
+											dataUrl: '',
+											success: function(){
+												window.alert('分享成功');
+											}
+										}
+
+										slides = {
+											current: subject.images.large,
+											urls: [subject.images.large]
+										}
+
+										data.subjects.forEach(function(item){
+											slides.urls.push(item.images.large);
+										})
+
+										wx.onMenuShareAppMessage(shareContent);
+									}
+								});
+							}
+						})
+					}
+				});
+			});
+		})
+	</script>
+</body>
+</html>

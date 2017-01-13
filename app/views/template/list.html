@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{title}}</title>
+	{{include '/include/head'}}
+	<link rel="stylesheet" href="/css/base.css">
+	<link rel="stylesheet" href="/css/list.css">
+</head>
+<body>
+<div class="list-container">
+	<div class="clearfix list-header"> 
+		<span class="fl">
+			<a href="javascript:;" onClick="show_layer('添加电影','/admin/movie/addEdit','800','500')"  class="btn btn-primary">
+				<i class="fa fa-plus"></i> 添加电影
+			</a>
+		</span> 
+		<span class="fr">共有数据：<strong>{{movies.length}}</strong> 条</span> 
+	</div>
+	<table class="table table-list">
+		<thead>
+			<tr class="table-title">
+				<th scope="col" colspan="9">{{title}}</th>
+			</tr>
+			<tr class="table-header">
+				<th width="5%">ID</th>
+				<th width="15%">名称</th>
+				<th width="15%">导演</th>
+				<th width="15%">演员</th>
+				<th width="10%">制片国家</th>
+				<th width="7%">语言</th>
+				<th width="10%">上映年份</th>
+				<th width="8%">浏览量</th>
+				<th width="15%">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			{{if movies.length}}
+        	{{each movies as movie index}}
+        	<tr>
+        		<td>{{index+1}}</td>
+        		<td>{{movie.title}}</td>
+        		<td>{{movie.director}}</td>
+        		<td>{{movie.actors}}</td>
+        		<td>{{movie.country}}</td>
+        		<td>{{movie.language}}</td>
+        		<td>{{movie.year}}</td>
+        		<td>{{movie.pv}}</td>
+        		<td>
+        			<a href="javascript:;" onClick="show_layer('电影编辑','/admin/movie/addEdit/{{movie.id}}','800','500')" class="btn-opt"><i class="fa fa-pencil"></i></a>
+        			<a href="javascript:;" class="btn-opt" onClick="delete_movie(this,'{{movie.id}}')"><i class="fa fa-trash-o"></i></a>
+        		</td>
+        	</tr>
+        	{{/each}}
+        	{{else}}
+        	<tr>
+        		<td colspan="9">暂无记录</td>
+        	</tr>
+        	{{/if}}
+		</tbody>
+	</table>
+</div>
+
+<script type="text/javascript" src="/libs/layer/layer.min.js"></script>
+<script type="text/javascript" src="/libs/dataTables/js/jquery.dataTables.min.js"></script> 
+<script type="text/javascript" src="/js/list.js"></script>
+</body>
+</html>

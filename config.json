@@ -1,0 +1,6 @@
+{
+	"host" : "http://tender.imwork.net",
+	"appId": "wxa70ee22bb073c6ef",
+	"appSecret": "667461fe041520cc4f8c921197be2937",
+	"token": "weixintoken"
+}

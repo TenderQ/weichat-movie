@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{title}}</title>
+	{{include '/include/head'}}
+	<link rel="stylesheet" href="/css/register.css">
+</head>
+<body>
+<div class="main-content">
+	<h1 class="title"><a href="/">爱电影</a></h1>
+	<div class="tab-nav" data-index="0">
+		<a href="#signup" class="active">注册</a>
+		<a href="#signin">登录</a>
+		<span id="nav-slider-bar"></span>
+	</div>
+	<div class="tab tab-signup">
+		<form method="post" action="/user/signup" class="form-horizotal" id="form-signup">
+			<div class="group-input">
+				<div class="input-wrap">
+					<input required type="text" name="user[name]" signup-name placeholder="用户名" >
+					<label class="error"></label>
+				</div>
+				<div class="input-wrap">
+					<input required type="password" name="user[password]" signup-pass placeholder="密码" >
+					<label class="error"></label>
+				</div>
+				<div class="input-wrap">
+					<input required type="password" signup-confirm placeholder="确认密码" >
+					<label class="error"></label>
+				</div>
+			</div>
+			<button type="submit" class="btn btn-primary btn-block">注册</button>
+		</form>
+	</div>
+	<div class="tab tab-signin">
+		<form method="post" action="/user/signin" class="form-horizotal" id="form-signin">
+			<div class="group-input">
+				<div class="input-wrap">
+					<input required type="text" name="user[name]" signin-name placeholder="用户名" >
+					<label class="error"></label>
+				</div>
+				<div class="input-wrap">
+					<input required type="password" name="user[password]" signin-pass placeholder="密码" >
+					<label class="error"></label>
+				</div>
+			</div>
+			<button type="submit" class="btn btn-primary btn-block">登录</button>
+		</form>
+	</div>
+</div>
+<canvas id="canvas"></canvas>
+<script src="/js/register.js" type="text/javascript"></script>
+</body>
+</html>
